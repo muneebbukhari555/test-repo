@@ -1,0 +1,34 @@
+# Extend default configuration and customize as needed
+
+# Use default configuration provided by Gitleaks
+inherit-defaults = true
+
+# Add custom rules or override default rules as needed
+[[rules]]
+  description = "Generic API key pattern"
+  regex = '''\b[a-zA-Z0-9_]{20,50}\b'''
+  entropy-check = true
+  tags = ["api-key"]
+
+[[rules]]
+  description = "AWS Access Key ID"
+  regex = '''\bAKIA[0-9A-Z]{16}\b'''
+  tags = ["aws"]
+
+[[rules]]
+  description = "AWS Secret Access Key"
+  regex = '''\b[0-9a-zA-Z/+]{40}\b'''
+  tags = ["aws"]
+
+
+# Configure severity levels for different types of leaks
+[severity]
+  # Set the severity level for all rules
+  default = "medium"
+
+  # Override severity levels for specific rules
+  [severity.rules."generic-api-key"]
+    level = "high"
+
+  [severity.rules."aws"]
+    level = "critical"
